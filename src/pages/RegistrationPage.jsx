@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { createData } from '../api/commonAPI'
+
+
 
 const RegistrationPage = () => {
   const [formData , setFormData] = useState({
@@ -29,7 +32,7 @@ const RegistrationPage = () => {
 
   }
 
-  const handleSubmit = (e)=>{
+  const handleSubmit = async (e)  =>{
 
     const newError= {};
     const nameRegex = /[a-zA-Z]/;
@@ -59,11 +62,22 @@ const RegistrationPage = () => {
 
     setError(newError);
 
-    if(Object.keys(newError).length === 0){
-      console.log(formData);
+    if(Object.keys(newError).length !== 0){
+     
+      return console.log(newError);
+     }
+
+    try {
+
+      const res = await createData("/register" , formData);
+      console.log(res);
+    } catch (error) {
+
       
-      alert("form submited");
+      
     }
+
+   
 
     
 
