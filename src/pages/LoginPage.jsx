@@ -1,10 +1,18 @@
 import React from 'react'
 import { useState } from 'react'
-import { getData } from '../api/commonAPI';
+import {  } from '../api/commonAPI';
+
 
 
 
 const LoginPage = () => {
+
+  const apiURL = import.meta.env.VITE_APP_SERVER_URL;
+  
+
+
+  console.log(apiURL);
+  
 
   const [loginForm , setLoginForm] = useState({
     email :"",

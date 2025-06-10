@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState} from 'react'
+import {useNavigate} from 'react-router-dom';
 import { createData } from '../api/commonAPI'
 
 
 
 const RegistrationPage = () => {
+
+  const navigate = useNavigate();
+
   const [formData , setFormData] = useState({
     firstname:'',
     lastname:'',
@@ -69,9 +73,23 @@ const RegistrationPage = () => {
 
     try {
 
-      const res = await createData("/register" , formData);
-      console.log(res);
+      const res = await createData("/api/register" , formData);
+      if(res.status == 201){
+        console.log(res.data);
+        navigate('/');
+        alert("Welcome to our team");
+
+
+      }
+      
     } catch (error) {
+     
+      console.log(error);
+      console.log(formData);
+      
+      
+     
+      }
 
       
       
@@ -83,7 +101,7 @@ const RegistrationPage = () => {
 
 
 
-  }
+  
 
   return (
     <div className="container-fluid m-0 vh-100"style={{backgroundColor: "#3A59D1"}}>
