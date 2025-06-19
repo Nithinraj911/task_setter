@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import {  } from '../api/commonAPI';
+import { createData } from '../api/commonAPI';
 
 
 
@@ -83,6 +83,12 @@ const LoginPage = () => {
     
   
       try {
+
+        const res = await createData("/api/login",loginForm);
+        if(res.status == 200){
+          
+
+        }
   
   
         
