@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Header = () => {
+const Header = ({userName,profilePic}) => {
   return (
     //third__try---------------------------------------------------------------------------------
     <div className="container-fluid p-0">
@@ -47,11 +47,11 @@ const Header = () => {
       <div className="d-flex justify-content-around align-items-center flex-wrap">
     {/* Profile Name and Image */}
     <div className="d-flex align-items-center">
-      <h6 className="me-2">anand naranaya moorthi</h6>
+      <h6 className="me-2">{userName}</h6>
       <img 
         className="rounded-circle px-2" 
         style={{ width: "50px", height: "35px" , objectFit: "cover" }} 
-        src="src/assets/try 02 (1 of 1).jpg" 
+        src={profilePic} 
         alt="profile_pic" 
       />
     </div>

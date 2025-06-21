@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import {Navigate, useNavigate} from 'react-router-dom';
 import { createData } from '../api/commonAPI';
 
 
@@ -8,6 +9,7 @@ import { createData } from '../api/commonAPI';
 const LoginPage = () => {
 
   const apiURL = import.meta.env.VITE_APP_SERVER_URL;
+  const navigate = useNavigate();
   
 
 
@@ -86,6 +88,10 @@ const LoginPage = () => {
 
         const res = await createData("/api/login",loginForm);
         if(res.status == 200){
+          const {user,token} = res.data;
+          navigate("/home",{state:{user,token}});
+
+
           
 
         }

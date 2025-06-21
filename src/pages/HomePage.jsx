@@ -62,10 +62,15 @@
 
 
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Header from '../components/Header.jsx';
 import TabCard from '../components/TabCard.jsx';
 
 const HomePage = () => {
+  const location = useLocation();
+  const {user,token} = location.state;
+  
+  
   const notes = [
     {
       title: "Meeting Summary",
@@ -99,7 +104,8 @@ const HomePage = () => {
   return (
     <div className='container-flud bg-succes vh-100'>
       <div className='m-4'>
-      <Header/>
+      <Header
+      userName={`${user.firstname} ${user.lastname}`}/>
       </div>
       
 
