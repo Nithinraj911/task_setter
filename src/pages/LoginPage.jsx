@@ -89,6 +89,9 @@ const LoginPage = () => {
         const res = await createData("/api/login",loginForm);
         if(res.status == 200){
           const {user,token} = res.data;
+          sessionStorage.setItem("token", token);
+
+          console.log("ON LOGIN"+"_______"+user.msg+","+"token :"+token +"," +" sessionStorage :"+ sessionStorage);
           navigate("/home",{state:{user,token}});
 
 
@@ -99,6 +102,8 @@ const LoginPage = () => {
   
         
       } catch (error) {
+
+        console.log(error);
         
       }
   

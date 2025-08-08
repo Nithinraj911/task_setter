@@ -65,41 +65,47 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/Header.jsx';
 import TabCard from '../components/TabCard.jsx';
+import { createData } from '../api/commonAPI';
+import { useEffect } from 'react';
 
 const HomePage = () => {
   const location = useLocation();
   const {user,token} = location.state;
-  
-  
-  const notes = [
-    {
-      title: "Meeting Summary",
-      subject: "Team Sync",
-      matter: "Discussed project milestones, upcoming deadlines, and blockers. Assigned new tasks to team members."
-    },
-    {
-      title: "Lecture Notes",
-      subject: "Physics - Quantum Mechanics",
-      matter: "Covered concepts of wave-particle duality, Heisenberg uncertainty principle, and Schrödinger equation."
-    },
-    {
-      title: "Shopping List",
-      subject: "Groceries",
-      matter: "Milk, eggs, bread, bananas, coffee, rice, and cleaning supplies."
-    },
-    {
-      title: "Project Plan",
-      subject: "Web App Development",
-      matter: "Define MVP features, set up project repo, assign frontend/backend roles, and schedule sprints."
-    },
-    {
-      title: "Event Reminder",
-      subject: "Mom's Birthday",
-      matter: "Plan a surprise party, order cake, buy gift, and invite family for dinner on the 18th."
-    }
-  ];
+  const [notes ,setNotes] = useState([]);
+  const [cardData, setCardData] = useState([]);
+  //console.log(JSON.stringify(user)+","+"token :"+token);
 
-  const [cardData, setCardData] = useState(notes);
+  useEffect(() =>{
+
+    const getTodoList = async () => {
+      try{
+        const res = await createData("/api/getTodoList",{});
+        if(res){
+          setNotes(res.data);
+  
+        }
+    
+        
+  
+      }catch(error){
+        console.log("data not resived"+ ","+ error);
+  
+      }
+      
+    }
+    
+    getTodoList();
+   
+    
+  },[]);
+  
+  useEffect(() => {
+    setCardData(notes);
+  }, [notes]);
+  
+  
+
+ 
 
   return (
     <div className='container-flud bg-succes vh-100'>
@@ -110,7 +116,7 @@ const HomePage = () => {
       
 
 
-<div className="container d-flex">
+<div className="container d-flex flex-wrap gap-4 pt-5">
 
 {cardData.map((data,index)=>(
            <TabCard
