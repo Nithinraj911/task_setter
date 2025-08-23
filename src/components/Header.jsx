@@ -1,6 +1,7 @@
 import React from 'react'
+import { headerUserData } from '../services/commonObj';
 
-const Header = ({userName,profilePic}) => {
+const Header = () => {
   return (
     //third__try---------------------------------------------------------------------------------
     <div className="container-fluid p-0">
@@ -47,11 +48,11 @@ const Header = ({userName,profilePic}) => {
       <div className="d-flex justify-content-around align-items-center flex-wrap">
     {/* Profile Name and Image */}
     <div className="d-flex align-items-center">
-      <h6 className="me-2">{userName}</h6>
+      <h6 className="me-2">{headerUserData.userName}</h6>
       <img 
         className="rounded-circle px-2" 
         style={{ width: "50px", height: "35px" , objectFit: "cover" }} 
-        src={profilePic} 
+        src={headerUserData.profilePic} 
         alt="profile_pic" 
       />
     </div>

@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import {Navigate, useNavigate} from 'react-router-dom';
 import { createData } from '../api/commonAPI';
+import {headerUserData} from '../services/commonObj.js';
 
 
 
@@ -90,9 +91,14 @@ const LoginPage = () => {
         if(res.status == 200){
           const {user,token} = res.data;
           sessionStorage.setItem("token", token);
+          headerUserData.userName = `${user.firstname} ${user.lastname}`;
+
+
 
           console.log("ON LOGIN"+"_______"+user.msg+","+"token :"+token +"," +" sessionStorage :"+ sessionStorage);
-          navigate("/home",{state:{user,token}});
+          navigate("/home");
+
+          {/*  */}
 
 
           
