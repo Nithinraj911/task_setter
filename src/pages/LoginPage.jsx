@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react'
 import {Navigate, useNavigate} from 'react-router-dom';
 import { createData } from '../api/commonAPI';
-import {headerUserData} from '../services/commonObj.js';
+import { GlobalContext } from '../context/Context.jsx';
 
 
 
@@ -11,6 +11,7 @@ const LoginPage = () => {
 
   const apiURL = import.meta.env.VITE_APP_SERVER_URL;
   const navigate = useNavigate();
+  const {setUserName} = useContext(GlobalContext);
   
 
 
@@ -91,7 +92,10 @@ const LoginPage = () => {
         if(res.status == 200){
           const {user,token} = res.data;
           sessionStorage.setItem("token", token);
-          headerUserData.userName = `${user.firstname} ${user.lastname}`;
+          sessionStorage.setItem("user", JSON.stringify(user));  
+          setUserName(
+            (perv)=>({...perv,userName:`${user.firstname} ${user.lastname}`})
+          );
 
 
 
@@ -145,12 +149,12 @@ const LoginPage = () => {
            onChange={handlePasswordChange}
           placeholder='Enter your password'/>
           {error.password && <small style={{ color: 'red' }}>{error.password}</small> }
-          <label className='mt-1' htmlFor="loginpassword">forget password
+          <label className='mt-1' style={{ cursor: 'pointer' }} htmlFor="loginpassword">forget password
           </label>
 
           <div className='my-4 p-0'>
              
-            <h6 className='col-md-12 text-white text-center'>Register an account</h6>
+            <h6 className='col-md-12 text-white text-center'style={{ cursor: 'pointer' }}>Register an account</h6>
             <button className='col-md-12 rounded text-white  border-0 p-0' onClick={handleSubmit} style={{backgroundColor: "#3A59D1", height:"45px"}}>Login</button>
 
           </div>

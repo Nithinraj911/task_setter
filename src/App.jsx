@@ -9,15 +9,18 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
 import {routes} from './services/routesObj.jsx';
+import { GlobalProvider } from './context/Context.jsx';
 
 function App() {
   
 
   return (
-    
+    <GlobalProvider>
     <Routes>
       {routes.map((route,Index)=>(
+          
         <Route key={Index} path={route.path} element={route.element} />
+        
       ))
 
       }
@@ -26,6 +29,7 @@ function App() {
       <Route path="/home" element={<HomePage />} />
       <Route path="/notecreater" element={<ShowTab />} /> */}
     </Routes>
+    </GlobalProvider>
  
   )
 }

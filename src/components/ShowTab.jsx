@@ -64,7 +64,7 @@ const ShowTab = () => {
         console.log(JSON.stringify(note));
         try {
         
-          const res = await createData("api/createTodoList" , note);
+          const res = await createData("/api/todo/createTodoList" , note);
           if (res.status === 200 || res.status === 201) {
             setShowSuccessMessage(true);
       
@@ -82,6 +82,7 @@ const ShowTab = () => {
       }
 
   return (
+
     <div>
         <Header />
         <Container className="" style={{ marginTop: "70px" }}>

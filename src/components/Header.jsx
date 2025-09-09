@@ -1,8 +1,25 @@
-import React from 'react'
-import { headerUserData } from '../services/commonObj';
+import React, { useContext } from 'react'
+import { GlobalContext } from '../context/Context';
+
 
 const Header = () => {
+  const context = useContext(GlobalContext);
+
+if (!context) {
+  console.error("GlobalContext is undefined in Header. Are you sure it's wrapped in <GlobalProvider>?");
+  return null; // or return fallback JSX
+}
+
+const { userName } = context;
+
+if(userName){
+  console.log(userName.userName);
+}else{
+  console.log("user name is missing");
+}
   return (
+   
+
     //third__try---------------------------------------------------------------------------------
     <div className="container-fluid p-0">
   <div className="navbar row align-items-center mx-0 position-fixed top-0 w-100 " style={{ backgroundColor:  "#3A59D1",zIndex: "1000"  // Ensures navbar doesn't overflow screen
@@ -48,26 +65,27 @@ const Header = () => {
       <div className="d-flex justify-content-around align-items-center flex-wrap">
     {/* Profile Name and Image */}
     <div className="d-flex align-items-center">
-      <h6 className="me-2">{headerUserData.userName}</h6>
+      <h6 className="me-2">{userName.userName}</h6>
       <img 
         className="rounded-circle px-2" 
         style={{ width: "50px", height: "35px" , objectFit: "cover" }} 
-        src={headerUserData.profilePic} 
+        src={userName.profilePic || "DumyProfilePic.png" } 
         alt="profile_pic" 
       />
     </div>
 
     {/* Staff/Admin, About, and Settings */}
     <div className="d-flex gap-3 flex-wrap">
-      <h6>Task Note</h6>
-      <h6>Roughf Note</h6>
-      <h6>About</h6>
+      <h6 className='' style={{ cursor: 'pointer' }} onClick={()=> console.log("clicked on task Manger")}>Task Note</h6>
+      <h6 className='' style={{ cursor: 'pointer' }} onClick={()=> console.log("clicked on roughf note")}>Roughf Note</h6>
+      <h6 className='' style={{ cursor: 'pointer' }} onClick={()=> console.log("clicked on about")}>About</h6>
     </div>
   </div>
 
     </div>
   </div>
 </div>
+
   )
 }
 

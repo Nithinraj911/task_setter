@@ -67,6 +67,7 @@ import Header from '../components/Header.jsx';
 import TabCard from '../components/TabCard.jsx';
 import { createData } from '../api/commonAPI';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
   const location = useLocation();
@@ -77,13 +78,14 @@ const HomePage = () => {
   const [isHovered, setIsHovered] = useState(false);
   //console.log(JSON.stringify(user)+","+"token :"+token);
 
+  //get the todo data when start
   useEffect(() =>{
 
     console.log(location);
 
     const getTodoList = async () => {
       try{
-        const res = await createData("/api/getTodoList",{});
+        const res = await createData("/api/todo/getTodoList",{});
         if(res){
           setNotes(res.data);
 
@@ -91,8 +93,6 @@ const HomePage = () => {
   
         }
     
-        
-  
       }catch(error){
         console.log("data not resived"+ ","+ error);
   
@@ -102,9 +102,10 @@ const HomePage = () => {
     
     getTodoList();
     console.log(notes + " " +" inSide useEffect to check notes");
-   
     
   },[]);
+
+
   
   useEffect(() => {
     setCardData(notes);
@@ -166,19 +167,27 @@ const HomePage = () => {
   className="position-fixed bottom-0 end-0 m-4"
   style={{ zIndex: 1030 }}
 >
-  <button
+<Link to="/notecreater"> <button
     type="button"
     className={`btn  d-flex align-items-center ${
       isHovered ? 'rounded-pill' : 'rounded-circle'
     } px-3 py-2`}
-    style={{ backgroundColor:  "#3A59D1", transition: 'all 1.4s ease-in-out' }}
-    onMouseEnter={() => setIsHovered(true)}
-    onMouseLeave={() => setIsHovered(false)}
-    onClick={(e) => navigate("/notecreater")}
+    style={{ backgroundColor:  "#3A59D1", transition: 'all 0.6s ease-in-out'}}
+    onMouseEnter={(e) => {setIsHovered(true)
+      e.target.style.width = "120px";
+    e.target.style.height = "50px";
+    }}
+    onMouseLeave={(e) => {setIsHovered(false)
+      e.target.style.width = "50px";
+    e.target.style.height = "50px";
+     e.target.style.borderRadius= "50%"}
+    }
+    //onClick={(e) => navigate("/notecreater")}
   >
-    <span className="fw-bold fs-4"style={{ color:  "#FFFFFF", transition: 'all 1.4s ease-in-out' }}>+</span>
-    {isHovered && <span className="ms-2"style={{ color:  "#FFFFFF", transition: 'all 1.4s ease-in-out' }}>Add Item</span>}
+    <span className="fw-bold fs-4"style={{ color:  "#FFFFFF", transition: 'all 0.6s ease-in-out' }}>+</span>
+    {isHovered && <span className="ms-2"style={{ color:  "#FFFFFF", transition: 'all 0.6s ease-in-out' }}>Add Item</span>}
   </button>
+  </Link>
 </div>
           
          
