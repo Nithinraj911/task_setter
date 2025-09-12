@@ -61,44 +61,31 @@
 // export default HomePage
 
 
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState,useEffect,useContext } from 'react';
+//import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../components/Header.jsx';
 import TabCard from '../components/TabCard.jsx';
-import { createData } from '../api/commonAPI';
-import { useEffect } from 'react';
+//import { createData } from '../api/commonAPI';
 import { Link } from 'react-router-dom';
+import { GlobalFetch } from '../context/GlobalFetch';
+
 
 const HomePage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  //const {user,token} = location.state;
-  const [notes ,setNotes] = useState([]);
-  const [cardData, setCardData] = useState([]);
-  const [isHovered, setIsHovered] = useState(false);
+  
+  const [cardData, setCardData] = useState([]);//created as a prop to pass res from get
+  const [isHovered, setIsHovered] = useState(false);//Hovering css contol
   //console.log(JSON.stringify(user)+","+"token :"+token);
+     const apiFuncCaller = useContext(GlobalFetch);
 
+     const {notes,todoOrNot,getTodoList,getRoughNoteList} = apiFuncCaller;
+
+   
   //get the todo data when start
   useEffect(() =>{
 
     console.log(location);
 
-    const getTodoList = async () => {
-      try{
-        const res = await createData("/api/todo/getTodoList",{});
-        if(res){
-          setNotes(res.data);
-
-          console.log(JSON.stringify(res.data) + " " + "res.data");
-  
-        }
     
-      }catch(error){
-        console.log("data not resived"+ ","+ error);
-  
-      }
-      
-    }
     
     getTodoList();
     console.log(notes + " " +" inSide useEffect to check notes");
@@ -106,12 +93,13 @@ const HomePage = () => {
   },[]);
 
 
-  
+  //set the note data for the map
   useEffect(() => {
     setCardData(notes);
     console.log(JSON.stringify(cardData) + " " +" inSide useEffect to check notes");
 
   }, [notes]);
+
   
  
 
@@ -125,10 +113,14 @@ const HomePage = () => {
       userName={`${user.firstname} ${user.lastname}`}/>
       </div>*/}
       <Header />
-      
+     <div className='mt-5 ps-5 pt-4'>
+     <h1>{todoOrNot ? "Todo List" : "Rough Note"}</h1>
+     </div> 
 
 
-<div className="container d-flex flex-wrap gap-4 pt-5" style={{marginTop : "60px"}}>
+
+<div className="container d-flex flex-wrap gap-4 " style={{marginTop : "40px"}}>
+
 
 {cardData.map((data,index)=>(
            <TabCard

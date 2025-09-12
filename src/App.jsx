@@ -10,12 +10,15 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import {routes} from './services/routesObj.jsx';
 import { GlobalProvider } from './context/Context.jsx';
+import { GlobalFetchProvider } from './context/GlobalFetch.jsx';
 
 function App() {
   
 
   return (
+
     <GlobalProvider>
+      <GlobalFetchProvider>
     <Routes>
       {routes.map((route,Index)=>(
           
@@ -29,6 +32,7 @@ function App() {
       <Route path="/home" element={<HomePage />} />
       <Route path="/notecreater" element={<ShowTab />} /> */}
     </Routes>
+    </GlobalFetchProvider>
     </GlobalProvider>
  
   )

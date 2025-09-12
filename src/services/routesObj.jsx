@@ -3,7 +3,6 @@ import RegistrationPage from '../pages/RegistrationPage.jsx';
 import HomePage from '../pages/HomePage.jsx';
 import NoteCreateTab from '../components/NoteCreateTab.jsx';
 import ShowTab from '../components/ShowTab.jsx';
-import { GlobalProvider } from '../context/Context.jsx';
 
 export const routes = [
     {

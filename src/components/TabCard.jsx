@@ -13,8 +13,8 @@ const TabCard = ({data}) => {
   return (
     <div className="card text-center" style={{ width: "18rem" }}>
     <div className="card-body">
-      <h5 className="card-title">{data.title}</h5>
-      <p className="card-text">{data.subject}</p>
+      <h5 className="card-title">{(data.title).slice(0,20)}</h5>
+      <p className="card-text">{(data.subject).slice(0,85)}</p>
       <div>
       <button className="btn btn-primary" onClick={handleOpen}>open</button>
       <button className="btn text-white mx-3" style={{backgroundColor:"#FF0505"}}>Delete</button>

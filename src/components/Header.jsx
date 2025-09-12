@@ -1,9 +1,11 @@
 import React, { useContext } from 'react'
 import { GlobalContext } from '../context/Context';
+import { GlobalFetch } from '../context/GlobalFetch';
 
 
-const Header = () => {
+const Header = ( ) => {
   const context = useContext(GlobalContext);
+  const apiFuncCaller = useContext(GlobalFetch);
 
 if (!context) {
   console.error("GlobalContext is undefined in Header. Are you sure it's wrapped in <GlobalProvider>?");
@@ -11,6 +13,7 @@ if (!context) {
 }
 
 const { userName } = context;
+const {todoOrNot,getTodoList,getRoughNoteList} = apiFuncCaller;
 
 if(userName){
   console.log(userName.userName);
@@ -65,7 +68,7 @@ if(userName){
       <div className="d-flex justify-content-around align-items-center flex-wrap">
     {/* Profile Name and Image */}
     <div className="d-flex align-items-center">
-      <h6 className="me-2">{userName.userName}</h6>
+      <h6 className="me-2">{userName.userName.charAt(0).toUpperCase() + userName.userName.slice(1).toLowerCase()}</h6>
       <img 
         className="rounded-circle px-2" 
         style={{ width: "50px", height: "35px" , objectFit: "cover" }} 
@@ -76,8 +79,8 @@ if(userName){
 
     {/* Staff/Admin, About, and Settings */}
     <div className="d-flex gap-3 flex-wrap">
-      <h6 className='' style={{ cursor: 'pointer' }} onClick={()=> console.log("clicked on task Manger")}>Task Note</h6>
-      <h6 className='' style={{ cursor: 'pointer' }} onClick={()=> console.log("clicked on roughf note")}>Roughf Note</h6>
+      <h6 className={todoOrNot?'d-none':''} style={{ cursor: 'pointer' }} onClick={()=> getTodoList()}>Task Note</h6>
+      <h6 className={todoOrNot?'':'d-none'} style={{ cursor: 'pointer' }} onClick={()=> getRoughNoteList()}>Roughf Note</h6>
       <h6 className='' style={{ cursor: 'pointer' }} onClick={()=> console.log("clicked on about")}>About</h6>
     </div>
   </div>
