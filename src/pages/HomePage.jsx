@@ -67,7 +67,7 @@ import Header from '../components/Header.jsx';
 import TabCard from '../components/TabCard.jsx';
 //import { createData } from '../api/commonAPI';
 import { Link } from 'react-router-dom';
-import { GlobalFetch } from '../context/GlobalFetch';
+import { GlobalFetch } from '../context/GlobalFetch.jsx';
 
 
 const HomePage = () => {
@@ -84,10 +84,20 @@ const HomePage = () => {
   useEffect(() =>{
 
     console.log(location);
+   
 
+    if(todoOrNot){
+     
+      getTodoList();
+
+
+    }else{
+
+      getRoughNoteList();
+
+    }
     
-    
-    getTodoList();
+   
     console.log(notes + " " +" inSide useEffect to check notes");
     
   },[]);
@@ -126,6 +136,7 @@ const HomePage = () => {
            <TabCard
            key={index}
            data={data}
+           flag={todoOrNot}
            
          />
         ))}

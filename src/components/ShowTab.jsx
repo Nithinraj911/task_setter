@@ -1,14 +1,17 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useContext } from 'react';
 import Header from './Header';
 import { Container, Form, Button, Card, Row, Col } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
-import { createData } from '../api/commonAPI';
+import { createData, updateData } from '../api/commonAPI';
+import { GlobalFetch } from '../context/GlobalFetch';
 
 const ShowTab = () => {
     const location = useLocation();
     const [addNote ,setAddNote] = useState(false);
-    const [showSuccessMessage ,setShowSuccessMessage] = useState(false);
+    const apiFuncCaller = useContext(GlobalFetch);
+    const {todoOrNot,setTodoOrNot,showSuccessMessage,delTodoOrNote,createTodoList,createNoteList} = apiFuncCaller;
     //const showAddButton = !addNote && (note.title || note.subject || note.matter);
+    const state = location?.state?.data;
 
 
     const [note, setNote] = useState({
@@ -16,24 +19,60 @@ const ShowTab = () => {
         subject: '',
         matter: ''
       });
+
+//check the refreshing of the page
+      const isPageRefreshed = () => {
+        const navEntries = performance.getEntriesByType("navigation");
+        return navEntries.length > 0 && navEntries[0].type === "reload";
+      };
+
+     
     
      // const showAddButton = !addNote && (note.title || note.subject || note.matter);
 
+     // set data if it redirected through card
     useEffect(()=>{
-      const state = location?.state?.data;
+     
       console.log("showTab state"+" "+JSON.stringify(state) );
 
+      console.log(todoOrNot);
 
+
+      if (isPageRefreshed()) {
+        console.log("localstorage " + " " + localStorage.getItem('todoOrNot') );
+
+        console.log( "todoOrNot value inside " + " " + todoOrNot);
+
+        let store = localStorage.getItem('todoOrNot');
+        if(store === 'true') { setTodoOrNot(true) }
+        else{ setTodoOrNot(false) }
+        
+      }
+        
+        // Your refresh-specific logic here
+      
         
         if(state){
             
             console.log("showTab state"+" "+JSON.stringify(state) );
             setAddNote(true);
-            setNote({
+            if(todoOrNot){
+              setNote({
                 title:state.title,
                 subject:state.subject,
                 matter: state.matter,
             });
+
+            }else{
+
+              setNote({
+                title:state.title,
+                subject:" ",
+                matter: state.matter,
+            });
+
+            }
+            
 
         }
 
@@ -59,25 +98,30 @@ const ShowTab = () => {
         setNote({ title: '', subject: '', matter: '' });
         
       };
-
+// create TODO note func
       const handleOnSubmit = async (e) =>{
         console.log(JSON.stringify(note));
+        if(todoOrNot){
+          createTodoList(note);
+        }else{
+          createNoteList(note);
+        }
+      }
+
+
+// update note or todo func
+
+      const editOnChange = async (e) =>{
+        e.preventDefault();
         try {
-        
-          const res = await createData("/api/todo/createTodoList" , note);
-          if (res.status === 200 || res.status === 201) {
-            setShowSuccessMessage(true);
-      
-            // Hide after 2.5 seconds
-            setTimeout(() => {
-              setShowSuccessMessage(false);
-            }, 2500);
-          }
+
+          const res = await (todoOrNot
+            ? updateData(`/api/todo/updateTodoList/${state._id}`, note)
+            : updateData(`/api/note/updateNoteList/${state._id}`, note));//?todo list update endpoint:note list update endpoint;
+        } catch (error) {
+
+          console.log("something went wrong",error);
           
-        } catch (error) { 
-        
-          return res.status(404).JSON({msg:"the data is not created"});
-           
         }
       }
 
@@ -86,7 +130,7 @@ const ShowTab = () => {
     <div>
         <Header />
         <Container className="" style={{ marginTop: "70px" }}>
-    <h2 className="mb-4">To-Do Notes</h2>
+    <h2 className="mb-4">{todoOrNot?"To-Do Notes":"Rough Note"}</h2>
     
     <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="noteTitle">
@@ -100,6 +144,8 @@ const ShowTab = () => {
         />
       </Form.Group>
 
+      {todoOrNot && 
+
       <Form.Group className="mb-3" controlId="noteSubject">
         <Form.Label>Subject</Form.Label>
         <Form.Control
@@ -110,6 +156,7 @@ const ShowTab = () => {
           onChange={handleChange}
         />
       </Form.Group>
+}
 
       <Form.Group className="mb-3" controlId="noteMatter">
         <Form.Label>Matter</Form.Label>
@@ -124,7 +171,7 @@ const ShowTab = () => {
       </Form.Group>
 
       {addNote? (
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" onClick={editOnChange}>
                             update Note
                         </Button>
                     

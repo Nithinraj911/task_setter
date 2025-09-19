@@ -1,9 +1,11 @@
 import React, { useContext } from 'react'
 import { GlobalContext } from '../context/Context';
 import { GlobalFetch } from '../context/GlobalFetch';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const Header = ( ) => {
+  const navigate = useNavigate();
   const context = useContext(GlobalContext);
   const apiFuncCaller = useContext(GlobalFetch);
 
@@ -13,13 +15,31 @@ if (!context) {
 }
 
 const { userName } = context;
-const {todoOrNot,getTodoList,getRoughNoteList} = apiFuncCaller;
+const {todoOrNot,getTodoList,getRoughNoteList,setNotes,setTodoOrNot} = apiFuncCaller;
 
-if(userName){
-  console.log(userName.userName);
-}else{
-  console.log("user name is missing");
+const logOutButton = () =>{
+
+  localStorage.clear();
+  sessionStorage.clear();
+
+  // Reset your global state
+  setNotes([]);
+  setTodoOrNot(true); // or null if you prefer
+  //setShowSuccessMessage(false);
+
+  // Redirect to login
+  navigate("/"); 
+
+  console.log("Log out succesfully ");
+
+
 }
+
+// if(userName){
+//   console.log(userName.userName);
+// }else{
+//   console.log("user name is missing");
+// }
   return (
    
 
@@ -30,7 +50,8 @@ if(userName){
     
     {/* Company Name Section */}
     <div className="col-md-3 text-white fw-bold fs-4">
-      <h3 className="brand-name mx-3 fs-2 fw-bold">my__task</h3>
+      <Link className='col-md-3 text-white fw-bolded fs-4' to= "/home">      <h3 className="brand-name mx-3 fs-2 fw-bold">my__task</h3>
+      </Link>
     </div>
 
     {/* Empty Column for Spacing */}
@@ -82,7 +103,11 @@ if(userName){
       <h6 className={todoOrNot?'d-none':''} style={{ cursor: 'pointer' }} onClick={()=> getTodoList()}>Task Note</h6>
       <h6 className={todoOrNot?'':'d-none'} style={{ cursor: 'pointer' }} onClick={()=> getRoughNoteList()}>Roughf Note</h6>
       <h6 className='' style={{ cursor: 'pointer' }} onClick={()=> console.log("clicked on about")}>About</h6>
+      <h6 className='ms-3 ps-3' style={{ cursor: 'pointer' }} onClick={logOutButton}>Log out</h6>
+
+
     </div>
+   
   </div>
 
     </div>
